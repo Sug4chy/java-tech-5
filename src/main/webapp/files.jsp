@@ -2,23 +2,34 @@
 <%@ page import="java.util.Date" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%
-    String path = request.getParameter("path");
+    String path = (String) request.getAttribute("path");
     if (path == null) {
-        path = "C:\\";
+        path = "D:\\";
     }
     File currentDirectory = new File(path);
     String parentDirectoryPath = currentDirectory.getParent();
 
     if (parentDirectoryPath == null) {
-        parentDirectoryPath = "C:\\";
+        parentDirectoryPath = "D:\\";
     }
 %>
 <html>
 <head>
     <title>File manager</title>
     <link rel="stylesheet" href="files.css">
+    <style>
+        #logout-button {
+            float: right;
+            width: 120px;
+            height: 40px;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
+    <form method="post">
+        <input type="submit" value="Выход" id="logout-button">
+    </form>
     <h3><%=new Date()%></h3>
     <h1><%=path%></h1>
     <hr/>
