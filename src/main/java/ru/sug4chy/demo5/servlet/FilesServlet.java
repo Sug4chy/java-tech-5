@@ -25,7 +25,7 @@ public class FilesServlet extends HttpServlet {
             throws IOException, ServletException {
         String login = (String) request.getSession().getAttribute("login");
         String password = (String) request.getSession().getAttribute("password");
-        if (!isUserAuthorized(login, password)) {
+        if (login == null || password == null) {
             String url = request.getRequestURL().toString();
             response.sendRedirect( url.substring(0, url.lastIndexOf("/")) + "/login");
             return;
@@ -71,10 +71,5 @@ public class FilesServlet extends HttpServlet {
     @Override
     public void destroy() {
         super.destroy();
-    }
-
-    private boolean isUserAuthorized(String login, String password) {
-        var user = accountService.getUserByLogin(login);
-        return user != null && user.getPassword().equals(password);
     }
 }

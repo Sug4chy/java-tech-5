@@ -5,11 +5,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ru.sug4chy.demo5.service.AccountService;
 
 import java.io.IOException;
 
 @WebServlet("/")
 public class SessionServlet extends HttpServlet {
+
+    private final AccountService accountService = new AccountService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -23,7 +26,9 @@ public class SessionServlet extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
-        if (login.isEmpty() || password.isEmpty()) {
+        var user = accountService.getUserByLogin(login);
+        if (login.isEmpty() || password.isEmpty()
+                || user == null || !user.getPassword().equals(password)) {
             resp.setContentType("text/html;charset=utf-8");
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().println("Введите и логин, и пароль");
